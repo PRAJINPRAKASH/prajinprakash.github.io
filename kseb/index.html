@@ -179,7 +179,7 @@ new Vue({
   methods: {
     calculate() {
       this.split = []
-      this.energyCharge = this.months * (this.getBillAmount(this.unit/this.months));
+      this.energyCharge = this.months * Math.round(((this.getBillAmount(this.unit/this.months))+ Number.EPSILON) * 100) / 100;
       this.$forceUpdate();
     },
     getVeriyingSlabBill(unit) {
