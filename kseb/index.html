@@ -80,8 +80,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.3.0/dist/vuetify.min.js"></script>
     <script>
-    
-    const gradients = [
+   const gradients = [
   ["#222"],
   ["#42b3f4"],
   ["red", "orange", "yellow"],
@@ -108,10 +107,20 @@ new Vue({
     autoLineWidth: false,
     unit: 40,
     energyCharge: 60,
+    split:[],
+    headers: [
+      {
+        text: 'Unit',
+        value: 'unit',
+      },
+      { text: 'Cost for unit', value: 'unitCost' },
+      
+    ],
   }),
   watch: {
     unit() {
       this.calculate();
+      this.split =[];
     },
   },
   computed: {
@@ -149,47 +158,59 @@ new Vue({
   },
   methods: {
     calculate() {
+      this.split = []
       this.energyCharge = this.getBillAmount(this.unit);
       this.$forceUpdate();
     },
     getVeriyingSlabBill(unit) {
       //incrementing charge
       if (unit > 200) {
-        return (unit - 200) * 6.5 + this.getVeriyingSlabBill(200);
+        this.split.push({ unit: unit - 200,unitCost: 7.6});    
+        return (unit - 200) * 7.6 + this.getVeriyingSlabBill(200);
       }
       if (unit > 150) {
-        return (unit - 150) * 5.3 + this.getVeriyingSlabBill(150);
+        this.split.push({ unit: unit - 150,unitCost: 6.4});  
+        return (unit - 150) * 6.4 + this.getVeriyingSlabBill(150);
       }
-      if (unit > 120) {
-        return (unit - 120) * 3.8 + this.getVeriyingSlabBill(120);
+      if (unit > 100) {
+        this.split.push({ unit: unit - 100,unitCost: 4.8});  
+        return (unit - 100) * 4.8 + this.getVeriyingSlabBill(100);
       }
-      if (unit > 80) {
-        return (unit - 80) * 3 + this.getVeriyingSlabBill(80);
+      if (unit > 50) {
+        this.split.push({ unit: unit - 50,unitCost: 3.7});  
+        return (unit -50) * 3.7 + this.getVeriyingSlabBill(50);
       }
-      return unit * 2.2;
+      this.split.push({ unit: unit,unitCost: 3.15});  
+      return unit * 3.15;
     },
     getBillAmount(unit) {
       //fixed charge
 
       if (unit > 500) {
-        return unit * 7;
+        this.split.push({ unit: unit,unitCost: 7.9});  
+        return unit * 7.9;
       }
       if (unit > 400) {
-        return unit * 6;
+        this.split.push({ unit: unit,unitCost: 7.1});  
+        return unit * 7.1;
       }
       if (unit > 350) {
-        return unit * 5.5;
+        this.split.push({ unit: unit,unitCost: 6.9});  
+        return unit * 6.9;
       }
       if (unit > 300) {
-        return unit * 5;
+        this.split.push({ unit: unit,unitCost: 6.6});  
+        return unit * 6.6;
       }
-      if (unit <= 40) {
-        return unit * 1.5;
+      if (unit > 250) {
+        this.split.push({ unit: unit,unitCost: 5.8});  
+        return unit * 5.8;
       }
       return this.getVeriyingSlabBill(unit);
     },
   },
-});</script>
+});
+</script>
 
   </body>
 </html>
